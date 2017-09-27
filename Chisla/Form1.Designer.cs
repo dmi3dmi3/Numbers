@@ -46,7 +46,7 @@
             // OutputLBL
             // 
             this.OutputLBL.AutoSize = true;
-            this.OutputLBL.Location = new System.Drawing.Point(12, 49);
+            this.OutputLBL.Location = new System.Drawing.Point(9, 83);
             this.OutputLBL.Name = "OutputLBL";
             this.OutputLBL.Size = new System.Drawing.Size(35, 13);
             this.OutputLBL.TabIndex = 1;

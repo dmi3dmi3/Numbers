@@ -15,7 +15,7 @@ namespace Chisla
     {
         Translator translator = new Translator();
         WordMeaning wm = new WordMeaning();
-
+        Queue<WordMeaning> result;
         public Form1()
         {
             InitializeComponent();
@@ -31,33 +31,76 @@ namespace Chisla
                 return;
             }
             translator.Set(InputTB.Text);
-            switch (LiteChecker.Check(Tools.Remove(translator.tmp_chislo, 3)))
+            switch (LiteChecker.Check(translator.TakeBegining()))
             {
                 case LiteChecker.Way.Black:
-                    break;
+                    wm = FullCheker.FCheck(LiteChecker.Way.Black, translator.tmp_chislo);
+                    if (ErrorCheck(wm))
+                        return;
+                    if (wm.res == 20)
+                    {
+                        if (!EndCheck(20, 7))
+                            return;
+                        Output(20);
+                    }
+                    translator.Cut(wm.num);
+                    switch (LiteChecker.Check(translator.TakeBegining()))
+                    {
+                        case LiteChecker.Way.Black:
+                            Output("После " + wm.res.ToString() + " не модет идти число единичного формата");
+                            return;
+                        case LiteChecker.Way.Orange:
+                            break;
+                        case LiteChecker.Way.Brown:
+                            Output(1);
+                            break;
+                        case LiteChecker.Way.Grey:
+                            break;
+                        case LiteChecker.Way.Red:
+                            break;
+                        case LiteChecker.Way.Yellow:
+                            break;
+                        case LiteChecker.Way.Green:
+                            break;
+                        case LiteChecker.Way.Blue:
+                            break;
+                        case LiteChecker.Way.Error:
+                            break;
+                        default:
+                            break;
+                    }
+
+                    return;
                 case LiteChecker.Way.Orange:
                     wm = FullCheker.FCheck(LiteChecker.Way.Orange, translator.tmp_chislo);
+                    result.Enqueue(wm);
                     if (ErrorCheck(wm))
                         return;
                     if (!EndCheck(wm.res, wm.num))
                         return;
-                    OutputLBL.Text = "10";
+                    Output(wm.res);
                     return;
                 case LiteChecker.Way.Brown:
-                    break;
+                    wm = FullCheker.FCheck(LiteChecker.Way.Brown, translator.tmp_chislo);
+                    if (ErrorCheck(wm))
+                        return;
+                    if (!EndCheck(wm.res, wm.num))
+                        return;
+                    Output(wm.res);
+                    return;
                 case LiteChecker.Way.Grey:
                     break;
                 case LiteChecker.Way.Red:
-                    OutputLBL.Text = "Эта ошибка не может появиться. Если она появилась, то что-то совсем не так. 1Red";
+                    Output("Эта ошибка не может появиться. Если она появилась, то что-то совсем не так. 1Red");
                         return;
                 case LiteChecker.Way.Yellow:
-                    OutputLBL.Text = "Эта ошибка не может появиться. Если она появилась, то что-то совсем не так. 1Yellow";
+                    Output("Эта ошибка не может появиться. Если она появилась, то что-то совсем не так. 1Yellow");
                         return;
                 case LiteChecker.Way.Green:
                     OutputLBL.Text = "Число не может начинаться с und";
                     return;
                 case LiteChecker.Way.Blue:
-                    OutputLBL.Text = "Эта ошибка не может появиться. Если она появилась, то что-то совсем не так. 1Blue";
+                    Output("Эта ошибка не может появиться. Если она появилась, то что-то совсем не так. 1Blue");
                     return;
                 case LiteChecker.Way.Error:
                     ErrorCheck(new WordMeaning(true, 0, 3, true));
@@ -68,7 +111,7 @@ namespace Chisla
 
         }
 
-        private void Underline(int a)
+        private void Underline(int a, int b)
         {
 
         }
@@ -77,10 +120,10 @@ namespace Chisla
         {
             if (wm.err == false)
                 return false;
-            OutputLBL.Text = "Орфографическая ошибка.";
+            Output("Орфографическая ошибка.");
             if (wm.res != 0)
-                OutputLBL.Text += " Возможно вы имели в виду " + wm.res.ToString() + ".";
-            Underline(wm.num);
+                Output(" Возможно вы имели в виду " + wm.res.ToString() + ".");
+            //Underline(0, wm.num);
             return true;
         }
 
@@ -88,9 +131,19 @@ namespace Chisla
         {
             if (translator.chislo.Count() == num)
                 return true;
-            OutputLBL.Text = "Это число " + res.ToString() + ". Но после него есть лишние смволы (" + (translator.chislo.Count() - num).ToString() + ").";
-            Underline(translator.chislo.Count() + num);
+            Output("Это число " + res.ToString() + ". Но после него есть лишние смволы (" + (translator.chislo.Count() - num).ToString() + ").");
+            //Underline(translator.chislo.Count() + num);
             return false;
+        }
+
+        private void Output(int a)
+        {
+            OutputLBL.Text = a.ToString() ;
+        }
+
+        private void Output(string s)
+        {
+            OutputLBL.Text = s;
         }
     }
 }

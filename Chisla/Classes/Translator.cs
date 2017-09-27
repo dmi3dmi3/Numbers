@@ -11,10 +11,6 @@ namespace Chisla.Classes
         public string chislo;//Изначальное слово
         public string tmp_chislo;//Остаток слова
         public string s_chislo;//Первые 3 буквы остатка
-        public string output = "";
-        public int errLong = 0;
-        public int result;
-        public bool endFlag;
 
         public Translator(){}
        
@@ -27,15 +23,14 @@ namespace Chisla.Classes
 
         public string TakeBegining()
         {
-            if (tmp_chislo.Count() >= 3)
-                s_chislo = tmp_chislo.Remove(3);
-            else if (tmp_chislo.Count() == 2)
-                s_chislo = tmp_chislo.Remove(2);
-            else if (tmp_chislo.Count() == 1)
-                s_chislo = tmp_chislo.Remove(1);
-            else s_chislo = "";
+            s_chislo = Tools.Remove(tmp_chislo, 3);
             return s_chislo;
         }
 
+        public string Cut(int a)
+        {
+            tmp_chislo = Tools.TakeEnd(tmp_chislo, a);
+            return tmp_chislo;
+        }
     }
 }
