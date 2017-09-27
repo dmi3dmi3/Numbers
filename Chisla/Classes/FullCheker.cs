@@ -25,7 +25,10 @@ namespace Chisla.Classes
                     {
                         case 1:
                             if (Tools.Remove(s, 3) == "ein")
-                                return new WordMeaning(false, 1, 3, false);
+                                if (Tools.Remove(s,4) == "eins")
+                                    return new WordMeaning(false, 1, 4, true);
+                                else
+                                    return new WordMeaning(false, 1, 3, false);
                             else
                                 return new WordMeaning(true, 1, 3, true);
                         case 2:
@@ -55,12 +58,18 @@ namespace Chisla.Classes
                                 return new WordMeaning(true, 5, 4, true);
                         case 6:
                             if (Tools.Remove(s, 4) == "sech")
-                                return new WordMeaning(false, 6, 4, false);
+                                if (Tools.Remove(s, 5) == "sechs")
+                                    return new WordMeaning(false, 6, 5, true);
+                                else
+                                    return new WordMeaning(false, 6, 4, false);
                             else
                                 return new WordMeaning(true, 6, 4, true);
                         case 7:
                             if (Tools.Remove(s, 4) == "sieb")
-                                return new WordMeaning(false, 7, 4, false);
+                                if (Tools.Remove(s, 6) == "sieben")
+                                    return new WordMeaning(false, 7, 6, true);
+                                else
+                                    return new WordMeaning(false, 7, 4, false);
                             else
                                 return new WordMeaning(true, 7, 4, true);
                         case 8:

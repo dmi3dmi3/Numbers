@@ -85,14 +85,13 @@ namespace Chisla.Classes
             string s1="";
             s1 += s[0];
             s1 += s[1];
-            if ((s[0] != 's') && (a == 1 || a == 6))
-                return -1;
-            if ((s1 != "en") && a == 7)
-                return -1;
-            if (a > 9 && a < 1)
-                return -1;
-
-            return a;
+            if (s[0] == 's' && a == 1)
+                return 1;
+            if (s[0] == 's' &&  a == 6)
+                return 6;
+            if (s1 == "en" && a == 7)
+                return 7;
+            return -1;
 
         }
 
@@ -147,14 +146,14 @@ namespace Chisla.Classes
 
         public static Way Check(string s)
         {
+           // if (Red(s, Black(s)) > 0) return Way.Red;
             if (Black(s) > 0) return Way.Black;
             if (Orange(s) > 0) return Way.Orange;
             if (Brown(s) > 0) return Way.Brown;
             if (Grey(s) > 0) return Way.Grey;         
             if (Green(s) > 0) return Way.Green;
             if (Blue(s) > 0) return Way.Blue;
-            if (Yellow(s, Black(s)) > 0) return Way.Black;
-            if (Red(s, Black(s)) > 0) return Way.Red;
+           // if (Yellow(s, Black(s)) > 0) return Way.Black;
             return Way.Error;
         }
     }
