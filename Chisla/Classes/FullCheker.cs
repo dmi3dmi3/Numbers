@@ -101,7 +101,7 @@ namespace Chisla.Classes
                         return new WordMeaning(false, 100, 7, false);
                     else
                         return new WordMeaning(true, 100, 7, true);
-                case LiteChecker.Way.Red:
+                /*case LiteChecker.Way.Red:
                     if (Tools.Remove(s,1) == "s")
                         if (s.Count() == 1)
                             return new WordMeaning(false, 0, 1, true);
@@ -122,9 +122,14 @@ namespace Chisla.Classes
                             else if (LiteChecker.Check(Tools.TakeEnd(s, 1)) == LiteChecker.Way.Grey)
                                 return new WordMeaning(false, 0, 0, false);
                             else
-                                return new WordMeaning(true, 0, 1, true);
+                                return new WordMeaning(true, 0, 1, true);*/
                 case LiteChecker.Way.Yellow:
-                    return new WordMeaning(false, 10, 3, true);
+                    if (Tools.Remove(s, 3) == "big")
+                        return new WordMeaning(false, 10, 3, true);
+                    else if (Tools.Remove(s, 3) == "zig")
+                        return new WordMeaning(false, 10, 3, false);
+                    else
+                        return new WordMeaning(true, 10, 3, true);
                 case LiteChecker.Way.Green:
                     return new WordMeaning(false, 10, 3, false);
                 case LiteChecker.Way.Blue:

@@ -96,12 +96,10 @@ namespace Chisla.Classes
         }
 
         //zig,big
-        public static int Yellow(string s, int a)
+        public static int Yellow(string s)
         {
-            string t;
-            t = a == 3 ? "big" : "zig";
-            if (s.Equals(t))
-                return a;
+            if (s=="zig" || s == "big")
+                return 10;
             else
                 return -1;
         }
@@ -146,14 +144,13 @@ namespace Chisla.Classes
 
         public static Way Check(string s)
         {
-           // if (Red(s, Black(s)) > 0) return Way.Red;
             if (Black(s) > 0) return Way.Black;
             if (Orange(s) > 0) return Way.Orange;
             if (Brown(s) > 0) return Way.Brown;
-            if (Grey(s) > 0) return Way.Grey;         
+            if (Grey(s) > 0) return Way.Grey;
+            if (Yellow(s) > 0) return Way.Black;
             if (Green(s) > 0) return Way.Green;
             if (Blue(s) > 0) return Way.Blue;
-           // if (Yellow(s, Black(s)) > 0) return Way.Black;
             return Way.Error;
         }
     }
