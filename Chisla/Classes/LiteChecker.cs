@@ -148,7 +148,7 @@ namespace Chisla.Classes
             if (Orange(s) > 0) return Way.Orange;
             if (Brown(s) > 0) return Way.Brown;
             if (Grey(s) > 0) return Way.Grey;
-            if (Yellow(s) > 0) return Way.Black;
+            if (Yellow(s) > 0) return Way.Yellow;
             if (Green(s) > 0) return Way.Green;
             if (Blue(s) > 0) return Way.Blue;
             return Way.Error;

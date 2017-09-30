@@ -15,7 +15,7 @@ namespace Chisla
     {
         Translator translator = new Translator();
         //WordMeaning wm = new WordMeaning();
-        WordMeaning[] wm = new WordMeaning[4];
+        WordMeaning[] wm = new WordMeaning[6];
         public Form1()
         {
             InitializeComponent();
@@ -246,6 +246,71 @@ namespace Chisla
                                             switch (LiteChecker.Check(translator.TakeBegining()))
                                             {
                                                 case LiteChecker.Way.Black:
+                                                    wm[4] = FullCheker.FCheck(LiteChecker.Way.Blue, translator.tmp_chislo);
+                                                    if (ErrorCheck(wm[4]))
+                                                        return;
+                                                    translator.Cut(wm[4].num);
+                                                    switch (LiteChecker.Check(translator.TakeBegining()))
+                                                    {
+                                                        case LiteChecker.Way.Black:
+                                                            wm[5] = FullCheker.FCheck(LiteChecker.Way.Black, translator.tmp_chislo);
+                                                            if (wm[5].err)
+                                                            {
+                                                                Output("После " + wm[4].res + " должно идти " + (wm[4].res == 3 ? "big." : "zig."));
+                                                                return;
+                                                            }
+                                                            Output("После " + wm[4].res + " не может идти число единичного формата");
+                                                            return;
+                                                        case LiteChecker.Way.Orange:
+                                                            wm[5] = FullCheker.FCheck(LiteChecker.Way.Orange, translator.tmp_chislo);
+                                                            if (wm[5].err)
+                                                            {
+                                                                Output("После " + wm[4].res + " должно идти " + (wm[4].res == 3 ? "big." : "zig."));
+                                                                return;
+                                                            }
+                                                            Output("После " + wm[4].res + " не может идти zehn");
+                                                            return;
+                                                        case LiteChecker.Way.Brown:
+                                                            wm[5] = FullCheker.FCheck(LiteChecker.Way.Brown, translator.tmp_chislo);
+                                                            if (wm[5].err)
+                                                            {
+                                                                Output("После " + wm[4].res + " должно идти " + (wm[4].res == 3 ? "big." : "zig."));
+                                                                return;
+                                                            }
+                                                            Output("После " + wm[4].res + " не может идти " + wm[5].res);
+                                                            return;
+                                                        case LiteChecker.Way.Grey:
+                                                            wm[5] = FullCheker.FCheck(LiteChecker.Way.Grey, translator.tmp_chislo);
+                                                            if (wm[5].err)
+                                                            {
+                                                                Output("После " + wm[4].res + " должно идти " + (wm[4].res == 3 ? "big." : "zig."));
+                                                                return;
+                                                            }
+                                                            Output("После " + wm[4].res + " не может идти hundert");
+                                                            return;
+                                                        case LiteChecker.Way.Yellow:
+                                                            wm[5] = FullCheker.FCheck(LiteChecker.Way.Yellow, translator.tmp_chislo);
+                                                            if (wm[4].res == 3 && !wm[5].helpFlag)
+                                                            {
+                                                                Output("Возможно вы имели в виду " + (wm[0].res * wm[1].res + wm[2].res + wm[4].res * wm[5].res) + ", но оно оканчиватся на big.");
+                                                                return;
+                                                            }
+                                                            if (wm[4].res != 3 && wm[5].helpFlag)
+                                                            {
+                                                                Output("Возможно вы имели в виду " + (wm[0].res * wm[1].res + wm[2].res + wm[4].res * wm[5].res) + ", но оно оканчиватся на zig.");
+                                                                return;
+                                                            }
+                                                            if (!EndCheck(wm[0].res * wm[1].res + wm[2].res + wm[4].res * wm[5].res, CountWM()))
+                                                                return;
+                                                            Output(wm[0].res * wm[1].res + wm[2].res + wm[4].res * wm[5].res);
+                                                            return;
+                                                        case LiteChecker.Way.Green:
+                                                            Output("После " + wm[4].res + " не может идти und");
+                                                            return;
+                                                        case LiteChecker.Way.Error:
+                                                            Output("После " + wm[4].res + " должно идти " + (wm[4].res == 3 ? "big." : "zig."));
+                                                            return;    
+                                                    }
                                                     break;
                                                 case LiteChecker.Way.Orange:
                                                     wm[4] = FullCheker.FCheck(LiteChecker.Way.Orange, translator.tmp_chislo);
@@ -284,24 +349,19 @@ namespace Chisla
                                                     Output("После und не может идти " + (wm[4].helpFlag ? "big" : "zig"));
                                                     return;
                                                 case LiteChecker.Way.Green:
-                                                    break;
-                                                case LiteChecker.Way.Blue:
-                                                    break;
+                                                    Output("После und не может идти und.");
+                                                    return;
                                                 case LiteChecker.Way.Error:
-                                                    break;
-                                                default:
-                                                    break;
+                                                    Output("Число не может заканчиваться на und.");
+                                                    return;
                                             }
                                             break;
-                                        case LiteChecker.Way.Blue:
-                                            break;
                                         case LiteChecker.Way.Error:
-                                            break;
-                                        default:
-                                            break;
-                                    }
+                                            EndCheck(wm[0].res * wm[1].res + wm[2].res, CountWM());
+                                            return;
 
-                                    break;
+                                    }
+                                    return;
                                 case LiteChecker.Way.Orange:
                                     wm[2] = FullCheker.FCheck(LiteChecker.Way.Orange, translator.tmp_chislo);
                                     if (ErrorCheck(wm[2]))
@@ -330,32 +390,21 @@ namespace Chisla
                                 case LiteChecker.Way.Green:
                                     Output("После hundert не может идти und");
                                     return;
-                                case LiteChecker.Way.Blue:
-                                    Output("Эта ошибка не может появиться. Если она появилась, то что-то совсем не так. 2Blue");
-                                    return;
                                 case LiteChecker.Way.Error:
-                                    Output("Error2");
-                                    return;
-                                default:
+                                    EndCheck(wm[0].res * wm[1].res + wm[2].res, CountWM());
                                     return;
                             }
-                            break;
-                        case LiteChecker.Way.Red:
-                            Output(2);
-                            break;
+                            return;
                         case LiteChecker.Way.Yellow:
-                            break;
+                            Output("После " + wm[0].res + " не может идти " + (wm[1].helpFlag ? "big." : "zig."));
+                            return;
                         case LiteChecker.Way.Green:
-                            break;
-                        case LiteChecker.Way.Blue:
+                            Output("После " + wm[0].res + " не может идти und");
                             break;
                         case LiteChecker.Way.Error:
-                            Output("Error1");
+                            EndCheck(wm[0].res, CountWM());
                             return;
-                        default:
-                            break;
                     }
-
                     return;
                 case LiteChecker.Way.Orange:
                     wm[0] = FullCheker.FCheck(LiteChecker.Way.Orange, translator.tmp_chislo);
@@ -374,7 +423,272 @@ namespace Chisla
                     Output(wm[0].res);
                     return;
                 case LiteChecker.Way.Grey:
-                    break;
+                    wm[0] = FullCheker.FCheck(LiteChecker.Way.Grey, translator.tmp_chislo);
+                    if (ErrorCheck(wm[0]))
+                        return;
+                    if (CountWM() == translator.chislo.Count())
+                    {
+                        Output(wm[0].res);
+                        return;
+                    }
+                    translator.Cut(wm[0].num);
+                    switch (LiteChecker.Check(translator.TakeBegining()))
+                    {
+                        case LiteChecker.Way.Black:
+                            wm[1] = FullCheker.FCheck(LiteChecker.Way.Black, translator.tmp_chislo);
+                            if (ErrorCheck(wm[1]))
+                                return;
+                            if (wm[1].res == 20)
+                            {
+                                if (!EndCheck(wm[0].res + wm[1].res, CountWM()))
+                                    return;
+                                Output(wm[0].res + wm[1].res);
+                            }
+                            if (CountWM() == translator.chislo.Count())
+                            {
+                                if (wm[1].res == 1 && !wm[1].helpFlag)
+                                {
+                                    Output("Возможно вы имели в виду " + 10 + "1 (eins)");
+                                    return;
+                                }
+                                if (wm[1].res == 6 && !wm[1].helpFlag)
+                                {
+                                    Output("Возможно вы имели в виду " + 10 + "6 (sechs)");
+                                    return;
+                                }
+                                if (wm[1].res == 7 && !wm[1].helpFlag)
+                                {
+                                    Output("Возможно вы имели в виду " + 10 + "7 (sieben)");
+                                    return;
+                                }
+                                Output(wm[0].res + wm[1].res);
+                                return;
+                            }
+
+                            translator.Cut(wm[1].num);
+                            switch (LiteChecker.Check(translator.TakeBegining()))
+                            {
+                                case LiteChecker.Way.Black:
+                                    Output("После " + wm[1].res + " не может идти число единичного формата");
+                                    return;
+                                case LiteChecker.Way.Orange:
+                                    if (wm[1].res == 1 || wm[1].res == 2)
+                                    {
+                                        Output("После " + wm[1].res + " не может идти zehn");
+                                        Underline(CountWM());
+                                        return;
+                                    }
+                                    if (wm[1].res == 6 && wm[1].helpFlag)
+                                    {
+                                        Output("Возможно вы имели в виду 116");
+                                        Underline(CountWM() - 5, CountWM() - 5);
+                                        return;
+                                    }
+                                    if (wm[1].res == 7 && wm[1].helpFlag)
+                                    {
+                                        Output("Возможно вы имели в виду 117");
+                                        Underline(CountWM() - 6, CountWM() - 5);
+                                        return;
+                                    }
+
+                                    wm[2] = FullCheker.FCheck(LiteChecker.Way.Orange, translator.tmp_chislo);
+                                    if (ErrorCheck(wm[2]))
+                                        return;
+                                    if (!EndCheck(wm[0].res + wm[1].res + wm[2].res, CountWM()))
+                                        return;
+                                    Output(wm[0].res + wm[1].res + wm[2].res);
+                                    return;
+                                case LiteChecker.Way.Brown:
+                                    wm[2] = FullCheker.FCheck(LiteChecker.Way.Brown, translator.tmp_chislo);
+                                    if (wm[2].err)
+                                    {
+                                        EndCheck(wm[0].res + wm[1].res, CountWM());
+                                        return;
+                                    }
+                                    Output("После " + (wm[0].res + wm[1].res) + " не может идти " + wm[2].res + ".");
+                                    Underline(wm[0].num);
+                                    return;
+                                case LiteChecker.Way.Grey:
+                                    wm[2] = FullCheker.FCheck(LiteChecker.Way.Grey, translator.tmp_chislo);
+                                    if (wm[2].err)
+                                    {
+                                        EndCheck(wm[0].res + wm[1].res, CountWM());
+                                        return;
+                                    }
+                                    Output("После " + (wm[0].res + wm[1].res) + " не может идти hundert.");
+                                    Underline(wm[0].num);
+                                    return;
+                                case LiteChecker.Way.Yellow:
+                                    wm[2] = FullCheker.FCheck(LiteChecker.Way.Yellow, translator.tmp_chislo);
+                                    if (wm[1].res == 3 && !wm[2].helpFlag)
+                                    {
+                                        Output("Возможно вы имели в виду " + (wm[0].res + wm[1].res * wm[2].res) + ", но оно оканчиватся на big.");
+                                        return;
+                                    }
+                                    if (wm[1].res != 3 && wm[2].helpFlag)
+                                    {
+                                        Output("Возможно вы имели в виду " + (wm[0].res + wm[1].res * wm[2].res) + ", но оно оканчиватся на zig.");
+                                        return;
+                                    }
+                                    if (EndCheck(wm[0].res + wm[1].res * wm[2].res, CountWM()))
+                                        return;
+                                    Output(wm[0].res + wm[1].res * wm[2].res);
+                                    return;
+                                case LiteChecker.Way.Green:
+                                    wm[2] = FullCheker.FCheck(LiteChecker.Way.Green, translator.tmp_chislo);
+                                    translator.Cut(wm[2].num);
+                                    switch (LiteChecker.Check(translator.TakeBegining()))
+                                    {
+                                        case LiteChecker.Way.Black:
+                                            wm[3] = FullCheker.FCheck(LiteChecker.Way.Blue, translator.tmp_chislo);
+                                            if (ErrorCheck(wm[3]))
+                                                return;
+                                            translator.Cut(wm[3].num);
+                                            switch (LiteChecker.Check(translator.TakeBegining()))
+                                            {
+                                                case LiteChecker.Way.Black:
+                                                    wm[4] = FullCheker.FCheck(LiteChecker.Way.Black, translator.tmp_chislo);
+                                                    if (wm[4].err)
+                                                    {
+                                                        Output("После " + wm[3].res + " должно идти " + (wm[3].res == 3 ? "big." : "zig."));
+                                                        return;
+                                                    }
+                                                    Output("После " + wm[3].res + " не может идти число единичного формата");
+                                                    return;
+                                                case LiteChecker.Way.Orange:
+                                                    wm[4] = FullCheker.FCheck(LiteChecker.Way.Orange, translator.tmp_chislo);
+                                                    if (wm[4].err)
+                                                    {
+                                                        Output("После " + wm[3].res + " должно идти " + (wm[3].res == 3 ? "big." : "zig."));
+                                                        return;
+                                                    }
+                                                    Output("После " + wm[3].res + " не может идти zehn");
+                                                    return;
+                                                case LiteChecker.Way.Brown:
+                                                    wm[4] = FullCheker.FCheck(LiteChecker.Way.Brown, translator.tmp_chislo);
+                                                    if (wm[4].err)
+                                                    {
+                                                        Output("После " + wm[3].res + " должно идти " + (wm[3].res == 3 ? "big." : "zig."));
+                                                        return;
+                                                    }
+                                                    Output("После " + wm[3].res + " не может идти " + wm[4].res);
+                                                    return;
+                                                case LiteChecker.Way.Grey:
+                                                    wm[4] = FullCheker.FCheck(LiteChecker.Way.Grey, translator.tmp_chislo);
+                                                    if (wm[4].err)
+                                                    {
+                                                        Output("После " + wm[3].res + " должно идти " + (wm[3].res == 3 ? "big." : "zig."));
+                                                        return;
+                                                    }
+                                                    Output("После " + wm[3].res + " не может идти hundert");
+                                                    return;
+                                                case LiteChecker.Way.Yellow:
+                                                    wm[4] = FullCheker.FCheck(LiteChecker.Way.Yellow, translator.tmp_chislo);
+                                                    if (wm[3].res == 3 && !wm[4].helpFlag)
+                                                    {
+                                                        Output("Возможно вы имели в виду " + (wm[0].res + wm[1].res + wm[3].res * wm[4].res) + ", но оно оканчиватся на big.");
+                                                        return;
+                                                    }
+                                                    if (wm[3].res != 3 && wm[4].helpFlag)
+                                                    {
+                                                        Output("Возможно вы имели в виду " + (wm[0].res + wm[1].res + wm[3].res * wm[4].res) + ", но оно оканчиватся на zig.");
+                                                        return;
+                                                    }
+                                                    if (!EndCheck(wm[0].res + wm[1].res + wm[3].res * wm[4].res, CountWM()))
+                                                        return;
+                                                    Output(wm[0].res + wm[1].res + wm[3].res * wm[4].res);
+                                                    return;
+                                                case LiteChecker.Way.Green:
+                                                    Output("После " + wm[3].res + " не может идти und");
+                                                    return;
+                                                case LiteChecker.Way.Error:
+                                                    Output("После " + wm[3].res + " должно идти " + (wm[3].res == 3 ? "big." : "zig."));
+                                                    return;
+                                            }
+                                            break;
+                                        case LiteChecker.Way.Orange:
+                                            wm[3] = FullCheker.FCheck(LiteChecker.Way.Orange, translator.tmp_chislo);
+                                            if (wm[3].err)
+                                            {
+                                                Output("После und должно идти число единичного формата от 2 до 9");
+                                                return;
+                                            }
+                                            Output("После und не может идти zehn");
+                                            return;
+                                        case LiteChecker.Way.Brown:
+                                            wm[3] = FullCheker.FCheck(LiteChecker.Way.Orange, translator.tmp_chislo);
+                                            if (wm[3].err)
+                                            {
+                                                Output("После und должно идти число единичного формата от 2 до 9");
+                                                return;
+                                            }
+                                            Output("После und не может идти " + wm[3].res);
+                                            return;
+                                        case LiteChecker.Way.Grey:
+                                            wm[3] = FullCheker.FCheck(LiteChecker.Way.Orange, translator.tmp_chislo);
+                                            if (wm[3].err)
+                                            {
+                                                Output("После und должно идти число единичного формата от 2 до 9");
+                                                return;
+                                            }
+                                            Output("После und не может идти hundert");
+                                            return;
+                                        case LiteChecker.Way.Yellow:
+                                            wm[3] = FullCheker.FCheck(LiteChecker.Way.Orange, translator.tmp_chislo);
+                                            if (wm[3].err)
+                                            {
+                                                Output("После und должно идти число единичного формата от 2 до 9");
+                                                return;
+                                            }
+                                            Output("После und не может идти " + (wm[3].helpFlag ? "big" : "zig"));
+                                            return;
+                                        case LiteChecker.Way.Green:
+                                            Output("После und не может идти und.");
+                                            return;
+                                        case LiteChecker.Way.Error:
+                                            Output("Число не может заканчиваться на und.");
+                                            return;
+                                    }
+                                    break;
+                                case LiteChecker.Way.Error:
+                                    EndCheck(wm[0].res + wm[1].res, CountWM());
+                                    return;
+
+                            }
+                            return;
+                        case LiteChecker.Way.Orange:
+                            wm[1] = FullCheker.FCheck(LiteChecker.Way.Orange, translator.tmp_chislo);
+                            if (ErrorCheck(wm[1]))
+                                return;
+                            if (!EndCheck(wm[0].res + wm[1].res, CountWM()))
+                                return;
+                            Output(wm[0].res + wm[1].res);
+                            return;
+                        case LiteChecker.Way.Brown:
+                            wm[1] = FullCheker.FCheck(LiteChecker.Way.Brown, translator.tmp_chislo);
+                            if (ErrorCheck(wm[1]))
+                                return;
+                            if (!EndCheck(wm[0].res + wm[1].res, CountWM()))
+                                return;
+                            Output(wm[0].res + wm[1].res);
+                            break;
+                        case LiteChecker.Way.Grey:
+                            wm[1] = FullCheker.FCheck(LiteChecker.Way.Grey, translator.tmp_chislo);
+                            if (ErrorCheck(wm[1]))
+                                return;
+                            Output("После hundert не может идти hundert. Это уже перебор.");
+                            return;
+                        case LiteChecker.Way.Yellow:
+                            Output("После hundert не может идти zig или big");
+                            return;
+                        case LiteChecker.Way.Green:
+                            Output("После hundert не может идти und");
+                            return;
+                        case LiteChecker.Way.Error:
+                            EndCheck(wm[0].res + wm[1].res, CountWM());
+                            return;
+                    }
+                    return;
                 case LiteChecker.Way.Red:
                     Output("Эта ошибка не может появиться. Если она появилась, то что-то совсем не так. 1Red");
                         return;
