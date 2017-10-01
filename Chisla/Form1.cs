@@ -14,8 +14,9 @@ namespace Chisla
     public partial class Form1 : Form
     {
         Translator translator = new Translator();
-        //WordMeaning wm = new WordMeaning();
         WordMeaning[] wm = new WordMeaning[6];
+        bool paintFlag = false;
+        int paintA, paintB;
         public Form1()
         {
             InitializeComponent();
@@ -32,16 +33,28 @@ namespace Chisla
             return n;
         }
 
+        private int CountWM(int a)
+        {
+            int n = 0;
+            for (int i = 0; i < a; i++)
+            {
+                if (wm[i] != null)
+                    n += wm[i].num;
+            }
+            return n;
+        }
+
         private void MainBtn_Click(object sender, EventArgs e)
         {
             ClearWM();
+            paintFlag = false;
+            Invalidate();
             if (InputTB.Text.Count()<3)
             {
                 Output("Необходимо ввести не меньше 3х символов");
                 return;
             }
             translator.Set(InputTB.Text);
-
 
             switch (LiteChecker.Check(translator.TakeBegining()))
             {
@@ -85,19 +98,19 @@ namespace Chisla
                             if (wm[0].res == 1 || wm[0].res == 2)
                             {
                                 Output("После " + wm[0].res + " не может идти zehn");
-                                Underline(wm[0].num);
+                                Underline(wm[0].num + 1);
                                 return;
                             }
                             if (wm[0].res == 6 && wm[0].helpFlag)
                             {
                                 Output("Возможно вы имели в виду 16");
-                                Underline(5, 5);
+                                Underline(4, 5);
                                 return;
                             }
                             if (wm[0].res == 7 && wm[0].helpFlag)
                             {
                                 Output("Возможно вы имели в виду 17");
-                                Underline(5, 6);
+                                Underline(4, 6);
                                 return;
                             }
                             wm[1] = FullCheker.FCheck(LiteChecker.Way.Orange, translator.tmp_chislo);
@@ -186,14 +199,14 @@ namespace Chisla
                                             }
                                             if (wm[2].res == 6 && wm[2].helpFlag)
                                             {
-                                                Output("Возможно вы имели в виду " + wm[0].res +"16");
-                                                Underline(CountWM() - 5, CountWM() - 5);
+                                                Output("Возможно вы имели в виду " + wm[0].res +"16 (sechzehn)");
+                                                Underline(CountWM() - 2, CountWM() - 1);
                                                 return;
                                             }
                                             if (wm[2].res == 7 && wm[2].helpFlag)
                                             {
-                                                Output("Возможно вы имели в виду " + wm[0].res + "17");
-                                                Underline(CountWM() - 6, CountWM() - 5);
+                                                Output("Возможно вы имели в виду " + wm[0].res + "17 (siebzehn)");
+                                                Underline(CountWM() - 3, CountWM() - 1);
                                                 return;
                                             }
 
@@ -208,21 +221,21 @@ namespace Chisla
                                             wm[3] = FullCheker.FCheck(LiteChecker.Way.Brown, translator.tmp_chislo);
                                             if (wm[3].err)
                                             {
-                                                EndCheck(wm[0].res * wm[1].res + wm[2].res, wm[0].num + wm[1].num + wm[2].num);
+                                                EndCheck(wm[0].res * wm[1].res + wm[2].res, CountWM(3));
                                                 return;
                                             }
                                             Output("После " + (wm[0].res * wm[1].res + wm[2].res)  + " не может идти " + wm[3].res + ".");
-                                            Underline(wm[0].num);
+                                            Underline(CountWM(3) - 1);
                                             return;
                                         case LiteChecker.Way.Grey:
                                             wm[3] = FullCheker.FCheck(LiteChecker.Way.Grey, translator.tmp_chislo);
                                             if (wm[3].err)
                                             {
-                                                EndCheck(wm[0].res * wm[1].res + wm[2].res, wm[0].num + wm[1].num + wm[2].num);
+                                                EndCheck(wm[0].res * wm[1].res + wm[2].res, CountWM(3));
                                                 return;
                                             }
                                             Output("После " + (wm[0].res * wm[1].res + wm[2].res) + " не может идти hundert.");
-                                            Underline(wm[0].num);
+                                            Underline(CountWM(3) - 1);
                                             return;
                                         case LiteChecker.Way.Yellow:
                                             wm[3] = FullCheker.FCheck(LiteChecker.Way.Yellow, translator.tmp_chislo);
@@ -391,7 +404,7 @@ namespace Chisla
                                     Output("После hundert не может идти und");
                                     return;
                                 case LiteChecker.Way.Error:
-                                    EndCheck(wm[0].res * wm[1].res + wm[2].res, CountWM());
+                                    EndCheck(wm[0].res * wm[1].res, CountWM());
                                     return;
                             }
                             return;
@@ -475,19 +488,19 @@ namespace Chisla
                                     if (wm[1].res == 1 || wm[1].res == 2)
                                     {
                                         Output("После " + wm[1].res + " не может идти zehn");
-                                        Underline(CountWM());
+                                        Underline(CountWM() - 1);
                                         return;
                                     }
                                     if (wm[1].res == 6 && wm[1].helpFlag)
                                     {
-                                        Output("Возможно вы имели в виду 116");
-                                        Underline(CountWM() - 5, CountWM() - 5);
+                                        Output("Возможно вы имели в виду 116 (sechzehn");
+                                        Underline(CountWM() - 2, CountWM() - 1);
                                         return;
                                     }
                                     if (wm[1].res == 7 && wm[1].helpFlag)
                                     {
-                                        Output("Возможно вы имели в виду 117");
-                                        Underline(CountWM() - 6, CountWM() - 5);
+                                        Output("Возможно вы имели в виду 117 (siebzehn)");
+                                        Underline(CountWM() - 3, CountWM() - 1);
                                         return;
                                     }
 
@@ -502,11 +515,11 @@ namespace Chisla
                                     wm[2] = FullCheker.FCheck(LiteChecker.Way.Brown, translator.tmp_chislo);
                                     if (wm[2].err)
                                     {
-                                        EndCheck(wm[0].res + wm[1].res, CountWM());
+                                        EndCheck(wm[0].res + wm[1].res, CountWM(2));
                                         return;
                                     }
                                     Output("После " + (wm[0].res + wm[1].res) + " не может идти " + wm[2].res + ".");
-                                    Underline(wm[0].num);
+                                    Underline(CountWM(2)-1);
                                     return;
                                 case LiteChecker.Way.Grey:
                                     wm[2] = FullCheker.FCheck(LiteChecker.Way.Grey, translator.tmp_chislo);
@@ -516,7 +529,7 @@ namespace Chisla
                                         return;
                                     }
                                     Output("После " + (wm[0].res + wm[1].res) + " не может идти hundert.");
-                                    Underline(wm[0].num);
+                                    Underline(CountWM(2) - 1);
                                     return;
                                 case LiteChecker.Way.Yellow:
                                     wm[2] = FullCheker.FCheck(LiteChecker.Way.Yellow, translator.tmp_chislo);
@@ -685,13 +698,10 @@ namespace Chisla
                             Output("После hundert не может идти und");
                             return;
                         case LiteChecker.Way.Error:
-                            EndCheck(wm[0].res + wm[1].res, CountWM());
+                            EndCheck(wm[0].res, CountWM());
                             return;
                     }
                     return;
-                case LiteChecker.Way.Red:
-                    Output("Эта ошибка не может появиться. Если она появилась, то что-то совсем не так. 1Red");
-                        return;
                 case LiteChecker.Way.Yellow:
                     Output("Слово не может начинаться с " + Tools.Remove(translator.chislo, 3) + ". Так заканчиваются числа десятичного формата");
                         return;
@@ -711,38 +721,51 @@ namespace Chisla
 
         private void ClearWM()
         {
-            foreach (WordMeaning var in wm)
+            for (int i = 0; i < 6; i++)
             {
-                if (var != null)
-                {
-                    var.res = 0;
-                    var.num = 0;
-                    var.helpFlag = false;
-                    var.err = false;
-                }
+                if (wm[i] != null)
+                    wm[i] = null;
             }
         }
 
         //Подчернкуть от а до б включительно
         private void Underline(int a, int b)
         {
-
+            paintFlag = true;
+            paintA = a;
+            paintB = b;
+            Invalidate();
         }
 
         //Подчернкуть от а до конца включительно
         private void Underline(int a)
         {
-
+            paintFlag = true;
+            paintA = a;
+            paintB = translator.chislo.Length;
+            Invalidate();
         }
 
-        private bool ErrorCheck(WordMeaning wm)
+        private bool ErrorCheck(WordMeaning wme)
         {
-            if (wm.err == false)
+            if (wme.err == false)
                 return false;
             Output("Орфографическая ошибка.");
-            if (wm.res != 0)
-                Output("Орфографическая ошибка. Возможно вы имели в виду " + wm.res.ToString() + ".");
-            //Underline(0, wm.num);
+            if (wme.res != 0)
+                Output("Орфографическая ошибка. Возможно вы имели в виду " + wme.res.ToString() + ".");
+            if (wm[1] == null)
+            {
+                Underline(0);
+            }
+            for (int i = 1; i < 5; i++)
+            {
+                if (wm[i + 1] == null)
+                {
+                    Underline(CountWM(i));
+                    return true;
+                }
+            }
+            Underline(CountWM(), CountWM()+3);
             return true;
         }
 
@@ -750,8 +773,8 @@ namespace Chisla
         {
             if (translator.chislo.Count() == num)
                 return true;
-            Output("Это число " + res.ToString() + ". Но после него есть лишние смволы (" + (translator.chislo.Count() - num).ToString() + ").");
-            //Underline(translator.chislo.Count() + num);
+            Output("Это число " + res.ToString() + ". Но после него есть лишние смволы (" + (translator.chislo.Length - num).ToString() + ").");
+            Underline(num);
             return false;
         }
 
@@ -763,6 +786,49 @@ namespace Chisla
         private void Output(string s)
         {
             OutputLBL.Text = s;
+        }
+
+        private void Form1_Paint(object sender, PaintEventArgs e)
+        {
+            if (paintFlag)
+            {
+                Graphics g = Graphics.FromHwnd(Handle);
+                Point a, b;
+                a = new Point(-2 + 
+                    InputTB.Left + (int)g.MeasureString(Tools.Remove(translator.chislo, paintA),InputTB.Font).Width,
+                    InputTB.Top +  InputTB.Height
+                    );
+                b = new Point(-2 + 
+                    InputTB.Left + (int)g.MeasureString(Tools.Remove(translator.chislo, paintB), InputTB.Font).Width, 
+                    InputTB.Top + InputTB.Height
+                    );
+                g.DrawLine(new Pen(Color.Red, 4), a, b);
+            }
+        }
+
+        private void InputTB_TextChanged(object sender, EventArgs e)
+        {
+            paintFlag = false;
+            Invalidate();
+        }
+
+        private void OutputLBL_TextChanged(object sender, EventArgs e)
+        {
+            string s = OutputLBL.Text;
+            int i = 0, k = 0;
+            while (i<s.Length)
+            {
+                if (s[i] == ' ')
+                {
+                    k++;
+                    if (k == 4)
+                    {
+                        k = 0;
+                        s = s.Insert(i, "\r\n");
+                    }
+                }
+                i++;
+            }
         }
     }
 }

@@ -46,11 +46,13 @@
             // OutputLBL
             // 
             this.OutputLBL.AutoSize = true;
-            this.OutputLBL.Location = new System.Drawing.Point(9, 83);
+            this.OutputLBL.Location = new System.Drawing.Point(9, 56);
+            this.OutputLBL.MaximumSize = new System.Drawing.Size(200, 100);
             this.OutputLBL.Name = "OutputLBL";
-            this.OutputLBL.Size = new System.Drawing.Size(35, 13);
+            this.OutputLBL.Size = new System.Drawing.Size(157, 26);
             this.OutputLBL.TabIndex = 1;
-            this.OutputLBL.Text = "label1";
+            this.OutputLBL.Text = "ß = b, ö = o, ü = u,                     Пробелы не учитываются";
+            this.OutputLBL.TextChanged += new System.EventHandler(this.OutputLBL_TextChanged);
             // 
             // InputTB
             // 
@@ -58,17 +60,19 @@
             this.InputTB.Name = "InputTB";
             this.InputTB.Size = new System.Drawing.Size(198, 20);
             this.InputTB.TabIndex = 2;
+            this.InputTB.TextChanged += new System.EventHandler(this.InputTB_TextChanged);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(762, 138);
+            this.ClientSize = new System.Drawing.Size(334, 126);
             this.Controls.Add(this.InputTB);
             this.Controls.Add(this.OutputLBL);
             this.Controls.Add(this.MainBtn);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Переводчик";
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -79,22 +79,6 @@ namespace Chisla.Classes
             }
         }
 
-        //s,en,_
-        public static int Red (string s, int a)
-        {      
-            string s1="";
-            s1 += s[0];
-            s1 += s[1];
-            if (s[0] == 's' && a == 1)
-                return 1;
-            if (s[0] == 's' &&  a == 6)
-                return 6;
-            if (s1 == "en" && a == 7)
-                return 7;
-            return -1;
-
-        }
-
         //zig,big
         public static int Yellow(string s)
         {
