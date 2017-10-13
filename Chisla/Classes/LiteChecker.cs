@@ -18,8 +18,7 @@ namespace Chisla.Classes
             switch (s)
             {
                 case "ein":
-                    return 1;
-                case "zwa":                
+                    return 1;               
                 case "zwe":
                     return 2;
                 case "dre":
@@ -84,8 +83,7 @@ namespace Chisla.Classes
         {
             if (s=="zig" || s == "big")
                 return 10;
-            else
-                return -1;
+            return -1;
         }
 
         //und
@@ -105,8 +103,6 @@ namespace Chisla.Classes
         {
             switch (s)
             {
-                case "zwa":
-                    return 2;
                 case "dre":
                     return 3;
                 case "vie":
@@ -126,6 +122,13 @@ namespace Chisla.Classes
             }
         }
 
+        public static int Red(string s)
+        {
+            if (s == "zwa")
+                return 20;
+            return -1;
+        }
+
         public static Way Check(string s)
         {
             if (Black(s) > 0) return Way.Black;
@@ -135,6 +138,7 @@ namespace Chisla.Classes
             if (Yellow(s) > 0) return Way.Yellow;
             if (Green(s) > 0) return Way.Green;
             if (Blue(s) > 0) return Way.Blue;
+            if (Red(s) > 0) return Way.Red;
             return Way.Error;
         }
     }
