@@ -1,0 +1,10 @@
+F:\Users\1\Desktop\Univer\ТАФЯ\Числа\Chisla2\Chisla2\bin\Debug\Chisla2.exe.config
+F:\Users\1\Desktop\Univer\ТАФЯ\Числа\Chisla2\Chisla2\bin\Debug\Chisla2.exe
+F:\Users\1\Desktop\Univer\ТАФЯ\Числа\Chisla2\Chisla2\bin\Debug\Chisla2.pdb
+F:\Users\1\Desktop\Univer\ТАФЯ\Числа\Chisla2\Chisla2\obj\Debug\Chisla2.csprojResolveAssemblyReference.cache
+F:\Users\1\Desktop\Univer\ТАФЯ\Числа\Chisla2\Chisla2\obj\Debug\Chisla2.MainForm.resources
+F:\Users\1\Desktop\Univer\ТАФЯ\Числа\Chisla2\Chisla2\obj\Debug\Chisla2.Properties.Resources.resources
+F:\Users\1\Desktop\Univer\ТАФЯ\Числа\Chisla2\Chisla2\obj\Debug\Chisla2.csproj.GenerateResource.Cache
+F:\Users\1\Desktop\Univer\ТАФЯ\Числа\Chisla2\Chisla2\obj\Debug\Chisla2.csproj.CoreCompileInputs.cache
+F:\Users\1\Desktop\Univer\ТАФЯ\Числа\Chisla2\Chisla2\obj\Debug\Chisla2.exe
+F:\Users\1\Desktop\Univer\ТАФЯ\Числа\Chisla2\Chisla2\obj\Debug\Chisla2.pdb
