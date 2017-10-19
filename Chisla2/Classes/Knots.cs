@@ -12,7 +12,8 @@ namespace Chisla2.Classes
         static public string[] Chislo { set; get; }
         static public string ErrMes;
         static public int Result;
-        static WordIfno errWI;
+        static public int undlin = -1;
+        
 
         static bool EndCheck()
         {
@@ -22,8 +23,7 @@ namespace Chisla2.Classes
                     k++;
             if (k == Chislo.Count())
                 return true;
-            errWI = Units.Check(Chislo[k]);
-            switch (errWI.Way)
+            switch (Units.Check(Chislo[k]).Way)
             {
                 case WordIfno.ways.Black:
                     ErrMes = " не может идти число единичного формата " + '"' + Chislo[k] + '"';
@@ -61,6 +61,7 @@ namespace Chisla2.Classes
             Clear();
             wordIfno[0] = Units.Check(Chislo[0]);
             Result = wordIfno[0].Res;
+            undlin = 0;
             switch (wordIfno[0].Way)
             {
                 case WordIfno.ways.Black:
@@ -68,17 +69,17 @@ namespace Chisla2.Classes
                     {
                         if (Result == 1 && !wordIfno[0].HelpFlag)
                         {
-                            ErrMes = "Орфографическая ошибка. Возможно вы имели в виду 1 'eins'";
+                            ErrMes = "Орфографическая ошибка. Возможно вы имели в виду 'eins'(1)";
                             return false;
                         }
                         if (Result == 6 && !wordIfno[0].HelpFlag)
                         {
-                            ErrMes = "Орфографическая ошибка. Возможно вы имели в виду 6 'sechs'";
+                            ErrMes = "Орфографическая ошибка. Возможно вы имели в виду 'sechs'(6)";
                             return false;
                         }
                         if (Result == 7 && !wordIfno[0].HelpFlag)
                         {
-                            ErrMes = "Орфографическая ошибка. Возможно вы имели в виду 7 'sieben'";
+                            ErrMes = "Орфографическая ошибка. Возможно вы имели в виду 'sieben'(7)";
                             return false;
                         }
                         return true;
@@ -93,12 +94,14 @@ namespace Chisla2.Classes
                 case WordIfno.ways.Yellow:
                     if (EndCheck())
                         return true;
+                    undlin = 1;
                     ErrMes = "После числа десятичного формата " + '"' + Chislo[0] + '"' + ErrMes;
                     return false;
 
                 case WordIfno.ways.Orange:
                     if (EndCheck())
                         return true;
+                    undlin = 1;
                     ErrMes = "После числа формата 10-19 " + '"' + Chislo[0] + '"' + ErrMes;
                     return false;
 
@@ -107,7 +110,7 @@ namespace Chisla2.Classes
                     return false;
 
                 default:
-                    ErrMes = "Невозможно расопзнать слово " + Chislo[0];
+                    ErrMes = "Невозможно расопознать слово " + '"' + Chislo[0] + '"';
                     return false;
             }
         }
@@ -115,6 +118,7 @@ namespace Chisla2.Classes
         static bool Beta()
         {
             wordIfno[1] = Units.Check(Chislo[1]);
+            undlin = 1;
             ErrMes = "После числа единичного формата " + '"' + Chislo[0] + '"' + ErrMes;
             switch (wordIfno[1].Way)
             {
@@ -124,6 +128,22 @@ namespace Chisla2.Classes
                 case WordIfno.ways.Grey:
                     if (EndCheck())
                     {
+                        undlin = 0;
+                        if (Result == 1 && !wordIfno[0].HelpFlag)
+                        {
+                            ErrMes = "Орфографическая ошибка. Перед hundert употребляется 'eins'";
+                            return false;
+                        }
+                        if (Result == 6 && !wordIfno[0].HelpFlag)
+                        {
+                            ErrMes = "Орфографическая ошибка. Перед hundert употребляется 'sechs'";
+                            return false;
+                        }
+                        if (Result == 7 && !wordIfno[0].HelpFlag)
+                        {
+                            ErrMes = "Орфографическая ошибка. Перед hundert употребляется 'sieben'";
+                            return false;
+                        }
                         Result = wordIfno[0].Res * wordIfno[1].Res;
                         return true;
                     }
@@ -137,11 +157,13 @@ namespace Chisla2.Classes
                 case WordIfno.ways.Green:
                     if (EndCheck())
                     {
+                        undlin = 2;
                         ErrMes = "Слово не может заканчиваться на und";
                         return false;
                     }
 
                     wordIfno[2] = Units.Check(Chislo[2]);
+                    undlin = 3;
                     if (wordIfno[2].Way == WordIfno.ways.Yellow)
                     {
                         if (EndCheck())
@@ -166,6 +188,7 @@ namespace Chisla2.Classes
             wordIfno[1] = Units.Check(Chislo[1]);
             ErrMes = "После " + '"' + Chislo[0] + '"' + ErrMes;
             Result = wordIfno[0].Res + wordIfno[1].Res;
+            undlin = 1;
             switch (wordIfno[1].Way)
             {
                 case WordIfno.ways.Black:
@@ -180,12 +203,14 @@ namespace Chisla2.Classes
                     if (EndCheck())
                         return true;
                     ErrMes = "После числа десятичного формата " + '"' + Chislo[1] + '"' + ErrMes;
+                    undlin = 4;
                     return false;
 
                 case WordIfno.ways.Orange:
                     if (EndCheck())
                         return true;
                     ErrMes = "После числа формата 10-19 " + '"' + Chislo[1] + '"' + ErrMes;
+                    undlin = 4;
                     return false;
 
                 case WordIfno.ways.Green:
@@ -202,6 +227,7 @@ namespace Chisla2.Classes
             wordIfno[2] = Units.Check(Chislo[2]);
             ErrMes = "После " + '"' + Chislo[1] + '"' + ErrMes;
             Result = wordIfno[0].Res * wordIfno[1].Res + wordIfno[2].Res;
+            undlin = 2;
             switch (wordIfno[2].Way)
             {
                 case WordIfno.ways.Black:
@@ -216,12 +242,14 @@ namespace Chisla2.Classes
                     if (EndCheck())
                         return true;
                     ErrMes = "После числа десятичного формата " + '"' + Chislo[2] + '"' + ErrMes;
+                    undlin = 3;
                     return false;
 
                 case WordIfno.ways.Orange:
                     if (EndCheck())
                         return true;
                     ErrMes = "После числа формата 10-19 " + '"' + Chislo[2] + '"' + ErrMes;
+                    undlin = 3;
                     return false;
 
                 case WordIfno.ways.Green:
@@ -238,6 +266,7 @@ namespace Chisla2.Classes
             wordIfno[2] = Units.Check(Chislo[2]);
             ErrMes = "После числа единичного формата" + '"' + Chislo[1] + '"' + ErrMes;
             Result = wordIfno[0].Res + wordIfno[1].Res;
+            undlin = 2;
             if (wordIfno[2].Way == WordIfno.ways.Green)
             {
                 if (EndCheck())
@@ -254,9 +283,11 @@ namespace Chisla2.Classes
                         return true;
                     }
                     ErrMes = "После числа десятичного формата " + '"' + Chislo[3] + '"' + ErrMes;
+                    undlin = 4;
                     return false;
                 }
                 ErrMes = "После und" + ErrMes;
+                undlin = 3;
                 return false;
             }
             return false;
@@ -267,6 +298,7 @@ namespace Chisla2.Classes
             wordIfno[3] = Units.Check(Chislo[3]);
             ErrMes = "После числа единичного формата " + '"' + Chislo[2] + '"' + ErrMes;
             Result = wordIfno[0].Res * wordIfno[1].Res + wordIfno[2].Res;
+            undlin = 3;
             if (wordIfno[3].Way == WordIfno.ways.Green)
             {
                 if (EndCheck())
@@ -283,9 +315,11 @@ namespace Chisla2.Classes
                         return true;
                     }
                     ErrMes = "После числа десятичного формата " + '"' + Chislo[4] + '"' + ErrMes;
+                    undlin = 5;
                     return false;
                 }
                 ErrMes = "После und" + ErrMes;
+                undlin = 4;
                 return false;
             }
             return false;
