@@ -36,7 +36,7 @@
             // MainBtn
             // 
             this.MainBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.MainBtn.Location = new System.Drawing.Point(358, 102);
+            this.MainBtn.Location = new System.Drawing.Point(488, 101);
             this.MainBtn.Name = "MainBtn";
             this.MainBtn.Size = new System.Drawing.Size(130, 40);
             this.MainBtn.TabIndex = 0;
@@ -48,9 +48,9 @@
             // 
             this.OutputLbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.OutputLbl.Location = new System.Drawing.Point(12, 73);
-            this.OutputLbl.MaximumSize = new System.Drawing.Size(340, 100);
+            this.OutputLbl.MaximumSize = new System.Drawing.Size(470, 100);
             this.OutputLbl.Name = "OutputLbl";
-            this.OutputLbl.Size = new System.Drawing.Size(340, 100);
+            this.OutputLbl.Size = new System.Drawing.Size(470, 100);
             this.OutputLbl.TabIndex = 1;
             // 
             // InputTB
@@ -58,19 +58,21 @@
             this.InputTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.InputTB.Location = new System.Drawing.Point(12, 12);
             this.InputTB.Name = "InputTB";
-            this.InputTB.Size = new System.Drawing.Size(478, 40);
+            this.InputTB.Size = new System.Drawing.Size(606, 40);
             this.InputTB.TabIndex = 2;
+            this.InputTB.TextChanged += new System.EventHandler(this.InputTB_TextChanged);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(498, 182);
+            this.ClientSize = new System.Drawing.Size(630, 182);
             this.Controls.Add(this.InputTB);
             this.Controls.Add(this.OutputLbl);
             this.Controls.Add(this.MainBtn);
             this.Name = "MainForm";
             this.Text = "Числа";
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.MainForm_Paint);
             this.ResumeLayout(false);
             this.PerformLayout();
 
